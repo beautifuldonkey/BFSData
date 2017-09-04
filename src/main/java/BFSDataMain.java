@@ -1,62 +1,40 @@
 import database.DbInit;
 import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.servlet.DefaultServlet;
-import org.eclipse.jetty.servlet.ServletContextHandler;
-import org.eclipse.jetty.servlet.ServletHolder;
-import org.eclipse.jetty.util.resource.Resource;
+import org.eclipse.jetty.webapp.WebAppContext;
 
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-
+/**
+ * Primary application class for BFS Data Server
+ */
 public class BFSDataMain {
-
-  private static DbInit db;
-
+  /**
+   * Primary method extended by class
+   * @param args
+   */
   public static void main(String[] args){
-    try{
-      initServer();
-//      db = new DbInit();
-//      boolean isConnected = db.checkConnection();
-//      System.out.println(isConnected);
+    try {
+      bootServer();
     }catch (Exception ex){
-      System.out.println("System Error: "+ex.getMessage());
+      System.out.println("System Error:"+ex.getMessage());
     }
+
   }
 
-  private static void initServer(){
+  private static void bootServer() throws Exception{
     try{
       Server bfsServer = new Server(7070);
+      String webappDir = "src/main/webapp/";
 
-      ClassLoader cl = BFSDataMain.class.getClassLoader();
+            WebAppContext webapp = new WebAppContext();
+      webapp.setContextPath("/");
+      webapp.setDescriptor(webappDir+"/WEB-INF/web.xml");
+      webapp.setResourceBase(webappDir);
 
-      URL url = cl.getResource("index.html");
-      if(url == null){
-        throw new RuntimeException("Unable to find resources.");
-      }
-
-      URI webRootUri = url.toURI().resolve("./").normalize();
-      System.out.println("WebRoot is "+webRootUri);
-
-      ServletContextHandler handler = new ServletContextHandler(ServletContextHandler.SESSIONS);
-      handler.setContextPath("/main");
-      handler.setBaseResource(Resource.newResource(webRootUri));
-//      handler.setResourceBase();
-      bfsServer.setHandler(handler);
-
-      ServletHolder holderPwd = new ServletHolder("default", DefaultServlet.class);
-      holderPwd.setInitParameter("dirAllowed","true");
-      handler.addServlet(holderPwd,"/");
-
+      bfsServer.setHandler(webapp);
       bfsServer.start();
-    }catch(URISyntaxException syntaxException){
-      System.out.println("URI Error: "+syntaxException.getMessage());
-    }catch(MalformedURLException urlException){
-      System.out.println("URL Error: "+urlException.getMessage());
-    }catch(Exception ex){
-      System.out.println("Error: "+ex.getMessage());
+      bfsServer.join();
+    }catch (InterruptedException intEx){
+      System.out.println("Interrupted: "+intEx.getMessage());
     }
-
   }
+
 }
