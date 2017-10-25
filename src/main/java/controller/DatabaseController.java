@@ -19,8 +19,8 @@ public class DatabaseController {
 
     try{
       status = db.isConnectionActive();
-    } catch (SQLException sqlEx){
-      System.out.println("Controller ex: "+sqlEx.getMessage());
+    } catch (Exception ex){
+      System.out.println("Controller ex: "+ex.getMessage());
     }
     return status;
   }

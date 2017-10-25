@@ -1,12 +1,15 @@
 package database;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-//import com.mysql.jdbc.Driver;
+import java.util.List;
 
 public class DbInit {
 
+  private static SessionFactory factory;
+  private static Session session;
   private Connection dbConnection;
   private String dbUn = "BFSData";
   private String dbUrl = "BFSData@127.0.0.1:3306";
@@ -14,27 +17,31 @@ public class DbInit {
   private String dbPw = "bfsdata";
 
   public DbInit(){
-    try{
-      dbConnection = DriverManager.getConnection("",dbUn,dbPw);
-      Class.forName("com.mysql.jdbc.Driver");
-
-    }catch (SQLException sqlEx){
-      System.out.println("SQL Exception: "+sqlEx.getMessage());
-    }
-    catch(ClassNotFoundException classEx){
-      System.out.println("Class not found exception: "+classEx.getLocalizedMessage());
+    try {
+      if(factory == null || session == null){
+        factory = new Configuration().configure().buildSessionFactory();
+        session = factory.openSession();
+      }
+    }catch (Exception ex){
+      ex.printStackTrace();
     }
   }
 
   public void setupSchema(){}
 
-  public boolean checkConnection(){
-    return false;
+  public boolean isConnectionActive(){
+    return session.isConnected();
   }
 
   public void purgeDb(){}
 
-  public void insertRecord(){}
+  public void insertRecord(TABLE_Test record){
+    session.merge(record);
+  }
+
+  public List<TABLE_Test> getTestRecords(){
+    return session.createQuery("select id FROM test",TABLE_Test.class).list();
+  }
 
   public boolean checkNewRawData(){
     return false;
