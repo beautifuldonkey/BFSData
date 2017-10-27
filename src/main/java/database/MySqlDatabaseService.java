@@ -6,7 +6,7 @@ import org.hibernate.cfg.Configuration;
 import java.sql.Connection;
 import java.util.List;
 
-public class DbInit {
+public class MySqlDatabaseService {
 
   private static SessionFactory factory;
   private static Session session;
@@ -16,7 +16,7 @@ public class DbInit {
 //  private String dbUrl = "jdbc:mysql://127.0.0.1:3306/?user=BFSData";
   private String dbPw = "bfsdata";
 
-  public DbInit(){
+  public MySqlDatabaseService(){
     try {
       if(factory == null || session == null){
         factory = new Configuration().configure().buildSessionFactory();
@@ -40,7 +40,7 @@ public class DbInit {
   }
 
   public List<TABLE_Test> getTestRecords(){
-    return session.createQuery("select id FROM test",TABLE_Test.class).list();
+    return session.createNamedQuery("getRecords",TABLE_Test.class).list();
   }
 
   public boolean checkNewRawData(){
