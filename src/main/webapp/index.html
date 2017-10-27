@@ -10,6 +10,8 @@
 </head>
 <body ng-app="app" style="background: forestgreen">
     <h1 style="width: 30%; margin: auto; font-family: cursive">BFS Data</h1>
-    <div><a class="greeting">Bleh</a></div>
+    <div ng-controller="database as db">
+        <a id="btn-check-status" ng-click="db.checkStatus()" style="background-color: aqua">Check DB Status</a>
+    </div>
 </body>
 </html>

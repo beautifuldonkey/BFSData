@@ -7,4 +7,12 @@ app.directive('greeting',function () {
       alert('Hey Yo!');
     }
   }
+})
+
+.controller('database',function () {
+  var self = this;
+
+  self.checkStatus = function () {
+    alert('Checking status');
+  }
 });
