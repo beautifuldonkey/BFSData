@@ -1,16 +1,14 @@
 package controller;
 
-import database.DbInit;
+import database.MySqlDatabaseService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import java.sql.SQLException;
 
 @Controller
 @RequestMapping(value = "/db")
 public class DatabaseController {
 
-  private DbInit db;
+  private MySqlDatabaseService db;
 
   @RequestMapping(value = "/checkStatus")
   public boolean checkDbStatus(){
