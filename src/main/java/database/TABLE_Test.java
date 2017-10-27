@@ -1,10 +1,12 @@
 package database;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
+
+
+@NamedQueries({
+    @NamedQuery(name = "getRecords", query = "FROM TABLE_Test ")
+})
 
 @Entity
 @Table(name = "TEST")
