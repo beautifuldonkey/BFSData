@@ -1,38 +1,72 @@
+import database.MySqlDatabaseService;
+import database.TABLE_Test;
 import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.servlet.DefaultServlet;
-import org.eclipse.jetty.servlet.ServletContextHandler;
-import org.eclipse.jetty.servlet.ServletHolder;
-import org.eclipse.jetty.util.resource.Resource;
-import java.net.URI;
-import java.net.URL;
+import org.eclipse.jetty.webapp.WebAppContext;
+import java.util.List;
 
+/**
+ * Primary application class for BFS Data Server
+ */
 public class BFSDataMain {
-    public static void main(String[] args){
-        try{
-            Server bfsServer = new Server(7070);
 
-            ClassLoader cl = BFSDataMain.class.getClassLoader();
+  private static MySqlDatabaseService db;
+  private static Server bfsServer;
+  private static int serverPort = 7070;
+  private static String webappDir = "src/main/webapp/";
 
-            URL url = cl.getResource("index.html");
-            if(url == null){
-                throw new RuntimeException("Unable to find resources.");
-            }
+  /**
+   * Primary method extended by class
+   * @param args
+   */
+  public static void main(String[] args){
+    try {
+      // booting server
+      bootServer();
+      System.out.println("Server Started!");
 
-            URI webRootUri = url.toURI().resolve("./").normalize();
-            System.out.println("WebRoot is "+webRootUri);
-
-            ServletContextHandler handler = new ServletContextHandler(ServletContextHandler.SESSIONS);
-            handler.setContextPath("/main");
-            handler.setBaseResource(Resource.newResource(webRootUri));
-            bfsServer.setHandler(handler);
-
-            ServletHolder holderPwd = new ServletHolder("default", DefaultServlet.class);
-            holderPwd.setInitParameter("dirAllowed","true");
-            handler.addServlet(holderPwd,"/");
-
-            bfsServer.start();
-        }catch (Exception ex){
-            System.out.println("Server Error: "+ex.getMessage());
-        }
+      // starting DB interface
+      bootDbInterface();
+      System.out.println("DB Interface is set up!");
+      System.out.println("connection status: " + db.isConnectionActive());
+    }catch (Exception ex){
+      System.out.println("System Exception:"+ex.getMessage());
     }
+  }
+
+  protected static boolean isServerRunning(){
+    return bfsServer != null && bfsServer.isStarted();
+  }
+
+  private static void bootDbInterface(){
+    db = new MySqlDatabaseService();
+  }
+
+  private static void bootServer() throws Exception {
+    try{
+      bfsServer = new Server(serverPort);
+      WebAppContext webapp = new WebAppContext();
+      webapp.setContextPath("/main");
+      webapp.setDescriptor(webappDir+"/WEB-INF/web.xml");
+      webapp.setResourceBase(webappDir);
+
+      bfsServer.setHandler(webapp);
+      bfsServer.start();
+    }catch (InterruptedException intEx){
+      System.out.println("Interrupted: "+intEx.getMessage());
+    }
+  }
+
+  private void insertTestRecord(){
+    TABLE_Test test = new TABLE_Test();
+    test.setCol1("bleh2");
+    test.setId(2);
+    db.insertRecord(test);
+    System.out.println("Record inserted!");
+  }
+
+  private void getTestRecords(){
+    List<TABLE_Test> list = db.getTestRecords();
+    System.out.println("Retrieved test records:");
+  }
+
 }
