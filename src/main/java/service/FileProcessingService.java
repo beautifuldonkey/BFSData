@@ -5,9 +5,9 @@ import java.util.List;
 public interface FileProcessingService {
   /**
    * Checks directory for raw data files
-   * @return list of file names
+   * @return raw data availability
    */
-  List<String> checkDirectory();
+  Boolean checkDirectory();
   /**
    * Processes raw data file
    * @param name file name to process

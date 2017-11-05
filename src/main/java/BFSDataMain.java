@@ -2,6 +2,9 @@ import database.MySqlDatabaseService;
 import database.TABLE_Test;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.webapp.WebAppContext;
+import service.FileProcessingService;
+import service.FileProcessingServiceImpl;
+
 import java.util.List;
 
 /**
@@ -9,6 +12,7 @@ import java.util.List;
  */
 public class BFSDataMain {
 
+  private static FileProcessingService fileProcessingService;
   private static MySqlDatabaseService db;
   private static Server bfsServer;
   private static int serverPort = 7070;
@@ -28,6 +32,11 @@ public class BFSDataMain {
       bootDbInterface();
       System.out.println("DB Interface is set up!");
       System.out.println("connection status: " + db.isConnectionActive());
+
+      fileProcessingService = new FileProcessingServiceImpl();
+      Boolean hasData = fileProcessingService.checkDirectory();
+      System.out.println("Data is available for processing: "+hasData);
+
     }catch (Exception ex){
       System.out.println("System Exception:"+ex.getMessage());
     }
