@@ -14,4 +14,10 @@ public interface FileProcessingService {
    * @return file processing success
    */
   Boolean processFile(String name);
+
+  /**
+   * Processes raw data files in directory
+   * @return files processing success
+   */
+  Boolean processFiles();
 }
