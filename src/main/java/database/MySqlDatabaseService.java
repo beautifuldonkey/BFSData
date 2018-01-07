@@ -36,7 +36,9 @@ public class MySqlDatabaseService {
   public void purgeDb(){}
 
   public void insertRecord(TABLE_Test record){
+    session.beginTransaction();
     session.merge(record);
+    session.getTransaction().commit();
   }
 
   public List<TABLE_Test> getTestRecords(){
