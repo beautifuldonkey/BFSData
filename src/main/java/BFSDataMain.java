@@ -66,12 +66,12 @@ public class BFSDataMain {
     test.setCol1("bleh2");
     test.setId(2);
     db.insertRecord(test);
-    System.out.println("Record inserted!");
+    logger.debug("Test Record inserted: {}" + test);
   }
 
   private void getTestRecords(){
     List<TABLE_Test> list = db.getTestRecords();
-    System.out.println("Retrieved test records:");
+    logger.debug("Retrieved test records: {}" + list);
   }
 
 }
