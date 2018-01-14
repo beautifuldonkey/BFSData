@@ -1,5 +1,6 @@
 import database.MySqlDatabaseService;
 import database.TABLE_Test;
+import org.apache.logging.log4j.*;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.webapp.WebAppContext;
 import java.util.List;
@@ -13,6 +14,8 @@ public class BFSDataMain {
   private static Server bfsServer;
   private static int serverPort = 7070;
   private static String webappDir = "src/main/webapp/";
+  private static final Logger logger = LogManager.getLogger(BFSDataMain.class);
+  private static String logTag = "BfsMain: ";
 
   /**
    * Primary method extended by class
@@ -21,15 +24,17 @@ public class BFSDataMain {
   public static void main(String[] args){
     try {
       // booting server
+      logger.info(logTag+"Boot server begin");
       bootServer();
-      System.out.println("Server Started!");
+      logger.info(logTag+"Boot server end");
 
       // starting DB interface
+      logger.info(logTag+"Boot Db Adapter begin");
       bootDbInterface();
-      System.out.println("DB Interface is set up!");
-      System.out.println("connection status: " + db.isConnectionActive());
+      logger.info(logTag+"Boot Db Adapter end");
+      logger.info(logTag+"connection status: " + db.isConnectionActive());
     }catch (Exception ex){
-      System.out.println("System Exception:"+ex.getMessage());
+      logger.error("System Exception:"+ex.getMessage());
     }
   }
 
@@ -52,7 +57,7 @@ public class BFSDataMain {
       bfsServer.setHandler(webapp);
       bfsServer.start();
     }catch (InterruptedException intEx){
-      System.out.println("Interrupted: "+intEx.getMessage());
+      logger.error("Interrupted: "+intEx.getMessage());
     }
   }
 
@@ -61,12 +66,12 @@ public class BFSDataMain {
     test.setCol1("bleh2");
     test.setId(2);
     db.insertRecord(test);
-    System.out.println("Record inserted!");
+    logger.debug("Test Record inserted: {}" + test);
   }
 
   private void getTestRecords(){
     List<TABLE_Test> list = db.getTestRecords();
-    System.out.println("Retrieved test records:");
+    logger.debug("Retrieved test records: {}" + list);
   }
 
 }
