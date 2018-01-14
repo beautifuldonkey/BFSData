@@ -1,5 +1,6 @@
 import database.MySqlDatabaseService;
 import database.TABLE_Test;
+import org.apache.logging.log4j.*;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.webapp.WebAppContext;
 import java.util.List;
@@ -13,6 +14,8 @@ public class BFSDataMain {
   private static Server bfsServer;
   private static int serverPort = 7070;
   private static String webappDir = "src/main/webapp/";
+  private static final Logger logger = LogManager.getLogger(BFSDataMain.class);
+  private static String logTag = "BfsMain: ";
 
   /**
    * Primary method extended by class
@@ -21,13 +24,15 @@ public class BFSDataMain {
   public static void main(String[] args){
     try {
       // booting server
+      logger.info(logTag+"Boot server begin");
       bootServer();
-      System.out.println("Server Started!");
+      logger.info(logTag+"Boot server end");
 
       // starting DB interface
+      logger.info(logTag+"Boot Db Adapter begin");
       bootDbInterface();
-      System.out.println("DB Interface is set up!");
-      System.out.println("connection status: " + db.isConnectionActive());
+      logger.info(logTag+"Boot Db Adapter end");
+      logger.info(logTag+"connection status: " + db.isConnectionActive());
     }catch (Exception ex){
       System.out.println("System Exception:"+ex.getMessage());
     }
