@@ -34,7 +34,7 @@ public class BFSDataMain {
       logger.info(logTag+"Boot Db Adapter end");
       logger.info(logTag+"connection status: " + db.isConnectionActive());
     }catch (Exception ex){
-      System.out.println("System Exception:"+ex.getMessage());
+      logger.error("System Exception:"+ex.getMessage());
     }
   }
 
@@ -57,7 +57,7 @@ public class BFSDataMain {
       bfsServer.setHandler(webapp);
       bfsServer.start();
     }catch (InterruptedException intEx){
-      System.out.println("Interrupted: "+intEx.getMessage());
+      logger.error("Interrupted: "+intEx.getMessage());
     }
   }
 
