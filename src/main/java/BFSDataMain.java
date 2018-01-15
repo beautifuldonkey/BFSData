@@ -40,7 +40,7 @@ public class BFSDataMain {
 
       fileProcessingService = new FileProcessingServiceImpl();
       Boolean hasData = fileProcessingService.checkDirectory();
-      System.out.println("Data is available for processing: "+hasData);
+      logger.info(logTag+"Data is available for processing: "+hasData);
     }catch (Exception ex){
       logger.error("System Exception:"+ex.getMessage());
     }
