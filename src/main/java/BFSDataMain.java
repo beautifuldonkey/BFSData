@@ -69,7 +69,7 @@ public class BFSDataMain {
     }
   }
 
-  private void insertTestRecord(){
+  private static void insertTestRecord(){
     TABLE_Test test = new TABLE_Test();
     test.setCol1("bleh2");
     test.setId(2);
@@ -77,7 +77,7 @@ public class BFSDataMain {
     logger.debug("Test Record inserted: {}" + test);
   }
 
-  private void getTestRecords(){
+  private static void getTestRecords(){
     List<TABLE_Test> list = db.getTestRecords();
     logger.debug("Retrieved test records: {}" + list);
   }
