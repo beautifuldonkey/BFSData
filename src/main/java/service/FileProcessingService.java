@@ -19,5 +19,5 @@ public interface FileProcessingService {
    * Processes raw data files in directory
    * @return files processing success
    */
-  Boolean processFiles();
+  List<Boolean> processFiles();
 }

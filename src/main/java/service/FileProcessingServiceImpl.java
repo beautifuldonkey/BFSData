@@ -1,10 +1,9 @@
 package service;
 
 import database.TABLE_PlayerData;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.File;
@@ -17,6 +16,9 @@ import java.util.Iterator;
 import java.util.List;
 
 public class FileProcessingServiceImpl implements FileProcessingService {
+
+  private static final Logger logger = LogManager.getLogger(FileProcessingServiceImpl.class);
+  private static final String LOG_TAG = "FileProcessingService: ";
 
   private String dataDir = "C://Users/jaw_m/Google Drive/FantasyFootball/2016WeekToWeek";
 
@@ -44,7 +46,7 @@ public class FileProcessingServiceImpl implements FileProcessingService {
     try {
       dirHasData = Files.list(new File(dataDir).toPath()).anyMatch(path -> path.getFileName().toString().contains(".xlsx"));
     }catch (IOException ex){
-      ex.printStackTrace();
+      logger.error(LOG_TAG + "IOException {}", ex);
     }
     return dirHasData;
   }
@@ -134,30 +136,40 @@ public class FileProcessingServiceImpl implements FileProcessingService {
       workbook.close();
       fis.close();
     } catch (FileNotFoundException fileEx){
-      System.out.println("FileNotFoundException: "+ fileEx.getMessage());
+      logger.error(LOG_TAG + "FileNotFoundException {}", fileEx);
     } catch (IOException ioEx){
-      System.out.println("IOException: "+ioEx.getMessage());
+      logger.error(LOG_TAG + "IOException {}", ioEx);
     }
 
     return fileProcessed;
   }
   @Override
-  public Boolean processFiles(){
+  public List<Boolean> processFiles(){
+    logger.info(LOG_TAG + "processFiles begin");
+    ArrayList<Boolean> results = new ArrayList<>();
+
     // check that data is available for processing
     if(!checkDirectory()){
-      return false;
+      results.add(false);
+      return results;
     }
 
     // set up for data processing
-    Boolean fileProcessed = false;
     List<String> files = retrieveFileNames();
+    logger.info(LOG_TAG + "retrieved {} files for processing", files.size());
+
+    int processingIndex = 0;
+    boolean processingResult;
 
     // start data processing
     for (String file : files) {
-      fileProcessed = processFile(file);
+      processingResult = processFile(file);
+      results.add(processingResult);
+      logger.info(LOG_TAG + "processed {} file with {} success result", processingIndex++, processingResult);
     }
 
-    return fileProcessed;
+    logger.info(LOG_TAG + "processFiles end");
+    return results;
   }
 
   private static boolean checkColIndex(int currentIndex, int lower, int upper){
@@ -169,7 +181,7 @@ public class FileProcessingServiceImpl implements FileProcessingService {
     try {
       Files.list(new File(dataDir).toPath()).forEach(path -> dataFiles.add(path.toString()));
     }catch (IOException ex){
-      ex.printStackTrace();
+      logger.error(LOG_TAG + "IOException {}", ex);
     }
     return dataFiles;
   }
@@ -185,7 +197,9 @@ public class FileProcessingServiceImpl implements FileProcessingService {
     }
 
     if(cell.getColumnIndex() == 1){
-//      playerData.setWeek(cell.getStringCellValue());
+      if(CellType.STRING.equals(cell.getCellTypeEnum())){
+        return false;
+      }
       playerData.setWeek(cell.getNumericCellValue());
       processingSuccess = true;
     }
