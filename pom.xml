@@ -8,6 +8,19 @@
   <artifactId>BFSData</artifactId>
   <version>1.0-SNAPSHOT</version>
 
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.8</source>
+          <target>1.8</target>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
   <dependencies>
     <!--Jetty-->
     <dependency>
@@ -75,6 +88,11 @@
       <version>RELEASE</version>
       <type>test-jar</type>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.poi</groupId>
+      <artifactId>poi-ooxml</artifactId>
+      <version>RELEASE</version>
     </dependency>
   </dependencies>
 </project>

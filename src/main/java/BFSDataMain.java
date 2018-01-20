@@ -3,6 +3,9 @@ import database.TABLE_Test;
 import org.apache.logging.log4j.*;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.webapp.WebAppContext;
+import service.FileProcessingService;
+import service.FileProcessingServiceImpl;
+
 import java.util.List;
 
 /**
@@ -10,6 +13,7 @@ import java.util.List;
  */
 public class BFSDataMain {
 
+  private static FileProcessingService fileProcessingService;
   private static MySqlDatabaseService db;
   private static Server bfsServer;
   private static int serverPort = 7070;
@@ -33,6 +37,10 @@ public class BFSDataMain {
       bootDbInterface();
       logger.info(logTag+"Boot Db Adapter end");
       logger.info(logTag+"connection status: " + db.isConnectionActive());
+
+      fileProcessingService = new FileProcessingServiceImpl();
+      Boolean hasData = fileProcessingService.checkDirectory();
+      logger.info(logTag+"Data is available for processing: "+hasData);
     }catch (Exception ex){
       logger.error("System Exception:"+ex.getMessage());
     }
@@ -61,7 +69,7 @@ public class BFSDataMain {
     }
   }
 
-  private void insertTestRecord(){
+  private static void insertTestRecord(){
     TABLE_Test test = new TABLE_Test();
     test.setCol1("bleh2");
     test.setId(2);
@@ -69,7 +77,7 @@ public class BFSDataMain {
     logger.debug("Test Record inserted: {}" + test);
   }
 
-  private void getTestRecords(){
+  private static void getTestRecords(){
     List<TABLE_Test> list = db.getTestRecords();
     logger.debug("Retrieved test records: {}" + list);
   }
