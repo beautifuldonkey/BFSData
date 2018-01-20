@@ -18,7 +18,7 @@ import java.util.List;
 public class FileProcessingServiceImpl implements FileProcessingService {
 
   private static final Logger logger = LogManager.getLogger(FileProcessingServiceImpl.class);
-  private static final String LOG_TAG = "FileProcessingService: ";
+  private static final String LOG_TAG = "FileProcessingService - {}: {}";
 
   private String dataDir = "C://Users/jaw_m/Google Drive/FantasyFootball/2016WeekToWeek";
 
@@ -46,7 +46,7 @@ public class FileProcessingServiceImpl implements FileProcessingService {
     try {
       dirHasData = Files.list(new File(dataDir).toPath()).anyMatch(path -> path.getFileName().toString().contains(".xlsx"));
     }catch (IOException ex){
-      logger.error(LOG_TAG + "IOException {}", ex);
+      logger.error(LOG_TAG, "IOException", ex);
     }
     return dirHasData;
   }
@@ -136,16 +136,16 @@ public class FileProcessingServiceImpl implements FileProcessingService {
       workbook.close();
       fis.close();
     } catch (FileNotFoundException fileEx){
-      logger.error(LOG_TAG + "FileNotFoundException {}", fileEx);
+      logger.error(LOG_TAG, "FileNotFoundException", fileEx);
     } catch (IOException ioEx){
-      logger.error(LOG_TAG + "IOException {}", ioEx);
+      logger.error(LOG_TAG, "IOException", ioEx);
     }
 
     return fileProcessed;
   }
   @Override
   public List<Boolean> processFiles(){
-    logger.info(LOG_TAG + "processFiles begin");
+    logger.info(LOG_TAG, "processFiles","begin");
     ArrayList<Boolean> results = new ArrayList<>();
 
     // check that data is available for processing
@@ -156,7 +156,7 @@ public class FileProcessingServiceImpl implements FileProcessingService {
 
     // set up for data processing
     List<String> files = retrieveFileNames();
-    logger.info(LOG_TAG + "retrieved {} files for processing", files.size());
+    logger.info(LOG_TAG, "retrieved files for processing", files.size());
 
     int processingIndex = 0;
     boolean processingResult;
@@ -165,10 +165,10 @@ public class FileProcessingServiceImpl implements FileProcessingService {
     for (String file : files) {
       processingResult = processFile(file);
       results.add(processingResult);
-      logger.info(LOG_TAG + "processed {} file with {} success result", processingIndex++, processingResult);
+      logger.info(LOG_TAG, "processed file with result", processingResult);
     }
 
-    logger.info(LOG_TAG + "processFiles end");
+    logger.info(LOG_TAG, "processFiles","end");
     return results;
   }
 
@@ -181,7 +181,7 @@ public class FileProcessingServiceImpl implements FileProcessingService {
     try {
       Files.list(new File(dataDir).toPath()).forEach(path -> dataFiles.add(path.toString()));
     }catch (IOException ex){
-      logger.error(LOG_TAG + "IOException {}", ex);
+      logger.error(LOG_TAG, "IOException", ex);
     }
     return dataFiles;
   }
