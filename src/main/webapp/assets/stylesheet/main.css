@@ -1,0 +1,11 @@
+.btn {
+    padding: 5px;
+    background: gray;
+    border: black;
+    border-width: 2px;
+    border-style: solid;
+}
+
+.content {
+    background: aqua;
+}
