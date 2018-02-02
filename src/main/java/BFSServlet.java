@@ -1,4 +1,4 @@
-import org.eclipse.jetty.http.HttpStatus;
+//import org.eclipse.jetty.http.HttpStatus;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -10,7 +10,7 @@ public class BFSServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setStatus(HttpStatus.OK_200);
+//        resp.setStatus(HttpStatus.OK_200);
         resp.getWriter().println("Wooo!");
     }
 }

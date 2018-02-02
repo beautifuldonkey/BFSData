@@ -41,9 +41,9 @@ public class MySqlDatabaseService {
     session.getTransaction().commit();
   }
 
-  public List<TABLE_Test> getTestRecords(){
-    return session.createNamedQuery("getRecords",TABLE_Test.class).list();
-  }
+//  public List<TABLE_Test> getTestRecords(){
+//    return session.createNamedQuery("getRecords",TABLE_Test.class).list();
+//  }
 
   public boolean checkNewRawData(){
     return false;

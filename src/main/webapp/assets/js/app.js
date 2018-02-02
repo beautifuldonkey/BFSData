@@ -12,7 +12,7 @@ app.directive('greeting',function () {
 app.factory('bfsDataService', function ($http) {
   return {
     checkStatus: function () {
-      return $http.get('/main/db/checkStatus')
+      return $http.get('/db/checkStatus')
           .then(function (value) {
             return value.data;
           });
