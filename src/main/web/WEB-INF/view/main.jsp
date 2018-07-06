@@ -1,0 +1,16 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script type="text/javascript" src="./lib/angular.min.js"></script>
+  <script type="text/javascript" src="./lib/angular-route.min.js"></script>
+  <script type="text/javascript" src="./lib/angular-mocks.js"></script>
+  <script type="text/javascript" src="./js/app.js"></script>
+</head>
+<body ng-app="app">
+<h1>Woot!!!</h1>
+<P>Heyo</P>
+<div><a class="greeting">Bleh</a></div>
+</body>
+</html>
