@@ -10,7 +10,7 @@
     <property name="hibernate.connection.username">BFSData</property>
     <property name="hibernate.connection.password">bfsdata</property>
 
-    <mapping class="database.TABLE_Test"/>
+    <mapping class="com.beautifuldonkey.database.TABLE_Test"/>
 
   </session-factory>
 </hibernate-configuration>
