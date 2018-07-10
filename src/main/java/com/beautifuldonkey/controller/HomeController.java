@@ -10,4 +10,7 @@ public class HomeController {
   @RequestMapping("/")
   public String showMain(){ return "main"; }
 
+  @RequestMapping("/checkStatus")
+  public boolean checkStatus(){ return true; }
+
 }
